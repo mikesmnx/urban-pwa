@@ -100,6 +100,10 @@
         if (value) {
             app.addedDefinitions = JSON.parse(value);
             console.log('added defs: ', app.addedDefinitions);
+
+            app.addedDefinitions.forEach(function(term) {
+                app.getDefinition(term);
+            });
         }
 
         //debugger
@@ -111,4 +115,9 @@
         }
     });
 
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./scripts/service-worker.js').then(function() { 
+            console.log('worker registered'); 
+        });
+    }
 })();
