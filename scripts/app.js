@@ -20,6 +20,9 @@
 
         app.getDefinition(term);
 
+        app.addedDefinitions.push(term);
+        app.saveAddedDefinitions();
+
         app.toggleAddDialog(false);
     });
 
@@ -51,9 +54,6 @@
                     resp.term = term;
                     
                     app.updateDefinitionCard(resp);
-                    app.addedDefinitions.push(term);
-
-                    app.saveAddedDefinitions();
                 }
 
             } 
