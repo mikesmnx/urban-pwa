@@ -44,6 +44,21 @@
     };
 
     app.getDefinition = function(term) {
+        var termUrl = 'https://api.urbandictionary.com/v0/define?term=' + encodeURIComponent(term);
+
+        if ('caches' in window) {
+            caches.match(termUrl).then(function(response) {
+                if (response) {
+                    response.json().then(function updateFromCache(json) {
+                        json.term = term;
+                        app.updateDefinitionCard(json);
+                    });
+                }
+            });
+        }
+
+        return;
+        
         var req = new XMLHttpRequest();
 
         req.onreadystatechange = function() {
@@ -62,8 +77,7 @@
             }
         };
 
-        req.open('GET', 'http://api.urbandictionary.com/v0/define?term=' + encodeURIComponent(term));
-        //req.open('GET', 'data/stand.json');
+        req.open('GET', termUrl);
         req.send();
     };
 
@@ -116,7 +130,7 @@
     });
 
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./scripts/service-worker.js').then(function() { 
+        navigator.serviceWorker.register('./service-worker.js').then(function() { 
             console.log('worker registered'); 
         });
     }
